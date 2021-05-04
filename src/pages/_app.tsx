@@ -1,6 +1,10 @@
 // import App from "next/app";
 import type { AppProps /*, AppContext */ } from "next/app";
 import "tailwindcss/tailwind.css";
+import "swiper/swiper.scss";
+import "swiper/components/lazy/lazy.scss";
+// import "swiper/components/navigation/navigation.scss";
+import "swiper/components/scrollbar/scrollbar.scss";
 
 function MyApp({ Component, pageProps }: AppProps) {
   return <Component {...pageProps} />;

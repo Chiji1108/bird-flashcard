@@ -1,16 +1,17 @@
-import { ComponentPropsWithoutRef } from "react";
+import { ComponentProps } from "react";
+import cn from "classnames";
 
-export default function Grid({
-  children,
-  ...props
-}: ComponentPropsWithoutRef<"ul">) {
+export interface GridProps extends ComponentProps<"ul"> {}
+
+export default function Grid({ className, ...props }: GridProps) {
   return (
     <ul
       {...props}
       role="list"
-      className="grid grid-cols-2 gap-x-4 gap-y-8 sm:grid-cols-3 sm:gap-x-6 lg:grid-cols-4 xl:gap-x-8"
-    >
-      {children}
-    </ul>
+      className={cn(
+        "grid gap-6 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4",
+        className
+      )}
+    />
   );
 }

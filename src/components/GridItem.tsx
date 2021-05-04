@@ -1,24 +1,100 @@
-import { Bird } from "../data/bird";
+import Button from "./Button";
+import Icon from "./Icon";
+import { square } from "../styles/utils.module.css";
+import cn from "classnames";
+import { useState } from "react";
+import Modal from "./Modal";
+import { Swiper, SwiperSlide } from "swiper/react";
+import SwiperCore, { Scrollbar, A11y, Lazy, Virtual } from "swiper";
+import ReactPlayer from "react-player/lazy";
 
-export default function GridItem({ name, detail, image, audio }: Bird) {
+SwiperCore.use([Scrollbar, A11y, Lazy, Virtual]);
+
+export interface GridItemProps {
+  name: string;
+  url: string;
+  images: string[];
+  audioIds: string[];
+}
+
+export default function GridItem({
+  name,
+  url,
+  images,
+  audioIds,
+}: GridItemProps) {
+  const [isFlipped, setFlipped] = useState(false);
+  const [isDone, setDone] = useState(false);
+  const [open, setOpen] = useState(false);
+  if (isDone) return null;
   return (
-    <li key={name} className="relative">
-      <div className="group block w-full aspect-w-10 aspect-h-7 rounded-lg bg-gray-100 focus-within:ring-2 focus-within:ring-offset-2 focus-within:ring-offset-gray-100 focus-within:ring-indigo-500 overflow-hidden">
-        <img
-          src={image}
-          alt={name}
-          className="object-cover pointer-events-none group-hover:opacity-75"
-        />
-        <button type="button" className="absolute inset-0 focus:outline-none">
-          <span className="sr-only">Play audio for {name}</span>
-        </button>
+    <li
+      className={cn(
+        square,
+        "relative bg-white rounded-lg overflow-hidden shadow flex items-center justify-center"
+      )}
+    >
+      {isFlipped ? (
+        <a
+          href={url}
+          className="flex justify-center items-center space-x-2 group"
+        >
+          <p className="text-xl font-bold group-hover:underline">{name}</p>
+          <Icon className="text-gray-500 group-hover:text-gray-700">
+            open_in_new
+          </Icon>
+        </a>
+      ) : (
+        <Swiper
+          className="w-full h-full"
+          // navigation
+          scrollbar={{ draggable: true }}
+          preloadImages={false}
+          lazy
+          virtual
+        >
+          {images.map((image) => (
+            <SwiperSlide key={image}>
+              <img
+                loading="lazy"
+                src={image}
+                alt={name}
+                className="w-full h-full object-cover"
+              />
+            </SwiperSlide>
+          ))}
+        </Swiper>
+      )}
+      {audioIds.length === 0 || (
+        <>
+          <Modal open={open} onClose={() => setOpen(false)}>
+            <div className="flex flex-col space-y-4">
+              {audioIds.map((audioId) => (
+                <ReactPlayer
+                  key={audioId}
+                  url={`https://www.youtube.com/watch?v=${audioId}`}
+                />
+              ))}
+            </div>
+          </Modal>
+          <div className="absolute left-2 bottom-2 z-10">
+            <Button onClick={() => setOpen(true)}>
+              <Icon className="text-white">volume_up</Icon>
+            </Button>
+          </div>
+        </>
+      )}
+
+      <div className="absolute right-2 bottom-2 z-10">
+        <Button onClick={() => setFlipped((prev) => !prev)}>
+          <Icon className="text-white">flip</Icon>
+        </Button>
       </div>
-      <p className="mt-2 block text-sm font-medium text-gray-900 truncate pointer-events-none">
-        {name}
-      </p>
-      <p className="block text-sm font-medium text-gray-500 hover:text-gray-700 pointer-events-none">
-        <a href={detail}>詳細</a>
-      </p>
+      <div className="absolute right-2 top-2 z-10">
+        <Button onClick={() => setDone(true)}>
+          <Icon className="text-white">done</Icon>
+        </Button>
+      </div>
     </li>
   );
 }
