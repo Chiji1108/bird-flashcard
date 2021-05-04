@@ -1,7 +1,5 @@
 import Button from "./Button";
 import Icon from "./Icon";
-import styles from "../styles/utils.module.css";
-import cn from "classnames";
 import { useState } from "react";
 import Modal from "./Modal";
 import { Swiper, SwiperSlide } from "swiper/react";
@@ -28,13 +26,8 @@ export default function GridItem({
   const [open, setOpen] = useState(false);
   if (isDone) return null;
   return (
-    <li
-      className={cn(
-        "aspect-w-1 aspect-h-1",
-        "relative bg-white rounded-lg overflow-hidden shadow"
-      )}
-    >
-      <div className="flex items-center justify-center">
+    <li className="aspect-w-1 aspect-h-1 relative bg-white rounded-lg overflow-hidden shadow">
+      <div className="flex items-center justify-center rounded-lg overflow-hidden">
         {isFlipped ? (
           <a
             href={url}
