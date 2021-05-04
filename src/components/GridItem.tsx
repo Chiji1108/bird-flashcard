@@ -1,6 +1,6 @@
 import Button from "./Button";
 import Icon from "./Icon";
-import { square } from "../styles/utils.module.css";
+import styles from "../styles/utils.module.css";
 import cn from "classnames";
 import { useState } from "react";
 import Modal from "./Modal";
@@ -30,7 +30,7 @@ export default function GridItem({
   return (
     <li
       className={cn(
-        square,
+        styles.square,
         "relative bg-white rounded-lg overflow-hidden shadow flex items-center justify-center"
       )}
     >
